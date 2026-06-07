@@ -1,0 +1,153 @@
+{
+  "latest": "1.26.6.7.0944",
+  "baseUrl": "https://cgw0822.gitee.io/nexushub-pages/apks",
+  "minAndroid": "7.0",
+  "versions": [
+    {
+      "version": "1.26.6.7.0944",
+      "file": "NexusHub-1.26.6.7.0944-debug.apk",
+      "size": 18191274,
+      "sha256": "74c84adfab36f5087260d9aaa53af475fe1c19f5d8b1c4749cb4fae15fd3da98",
+      "date": "2026-06-07",
+      "changelog": [
+        "论坛全链路点击作者头像/昵称，跳转个人主页",
+        "新增 User 数据模型 + 9 位 Mock 用户（银河漫游者 / 极光工匠等）",
+        "用户主页：大头像、统计三连、该用户所有帖子、编辑/私信/关注按钮"
+      ]
+    },
+    {
+      "version": "1.26.6.6.2248",
+      "file": "NexusHub-1.26.6.6.2248-debug.apk",
+      "size": 18142122,
+      "sha256": "db71185b287111287f2f3350b698dca22ee4825cb49bc6af6577f8c560af503b",
+      "date": "2026-06-06",
+      "changelog": [
+        "评论长按弹出操作菜单：回复 / 复制 / 置顶 / 举报 / 删除，按权限自动过滤",
+        "评论数据模型增 authorId、parentId 字段，递归删除子树 + 同步帖子评论数",
+        "ModalBottomSheet 风格与帖子菜单统一，长按触发 HapticFeedback 震动"
+      ]
+    },
+    {
+      "version": "1.26.6.6.1800",
+      "file": "NexusHub-1.26.6.6.1800-debug.apk",
+      "size": 18125734,
+      "sha256": "80939f09bab07e1d7a37bf134a8758e0788d70ffbe776f072e5743aaa7efbd3a",
+      "date": "2026-06-06",
+      "changelog": [
+        "APK 版本号格式修复：最后 4 位 HHMM 永远保留前导 0（之前小时 < 10 会丢 0）"
+      ]
+    },
+    {
+      "version": "1.26.6.6.1700",
+      "file": "NexusHub-1.26.6.6.1700-debug.apk",
+      "size": 18091263,
+      "sha256": "e0eed574050951a625d9f215988e4fbeb4ee12ca09d58a393bb0cb70249bd34a",
+      "date": "2026-06-06",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.6.1600",
+      "file": "NexusHub-1.26.6.6.1600-debug.apk",
+      "size": 18058495,
+      "sha256": "163610aa5ea9d0f9740438008975009b0406c86ade7034cb96908026aca5b534",
+      "date": "2026-06-06",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.6.1500",
+      "file": "NexusHub-1.26.6.6.1500-debug.apk",
+      "size": 18022799,
+      "sha256": "e04e124c3ab64b2066115169cef709c9a18b93c98d447fc5477cd03de157ae03",
+      "date": "2026-06-06",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.6.1300",
+      "file": "NexusHub-1.26.6.6.1300-debug.apk",
+      "size": 17952562,
+      "sha256": "c762f8bb0fa848202492cc05eb21799a248e1649292aa24739c86715f2ebd972",
+      "date": "2026-06-06",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.5.2348",
+      "file": "NexusHub-1.26.6.5.2348-debug.apk",
+      "size": 17803780,
+      "sha256": "f524350d99efc3fea09e10ec880c11c48a3f0582e8284dd2881c2777bd1c7b79",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.5.2329",
+      "file": "NexusHub-1.26.6.5.2329-debug.apk",
+      "size": 17754265,
+      "sha256": "01cf26d9c6274cad67fca916054d879f14839a4d94881d3703261153e5367c12",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.5.2241",
+      "file": "NexusHub-1.26.6.5.2241-debug.apk",
+      "size": 17754265,
+      "sha256": "3da740fa958c4e42b6f9f16f9ce8d0ddd1feb8f650c30a012886898b6a76b44c",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.26.6.5.2220",
+      "file": "NexusHub-1.26.6.5.2220-debug.apk",
+      "size": 17749402,
+      "sha256": "c0a217cba848a0ed0f7264f66448a5d86c1415b27bae063634c25bd8872bd432",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.2.0",
+      "file": "NexusHub-1.2.0-debug.apk",
+      "size": 17749394,
+      "sha256": "2603b3ca4d960b5c894640eab6bdaae514634fd4c80f06bb9d4c72d5070362a3",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.1.9",
+      "file": "NexusHub-1.1.9-debug.apk",
+      "size": 17684848,
+      "sha256": "fb62e545b0f4168d339013eddd515f506a0b661775560610e229133545c3b0ec",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.1.8",
+      "file": "NexusHub-1.1.8-debug.apk",
+      "size": 17652076,
+      "sha256": "38328e9a60d1435b63c872a25de6b1d81e51bbf9a0e66a8125eff4ea38406521",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.1.7",
+      "file": "NexusHub-1.1.7-debug.apk",
+      "size": 17668464,
+      "sha256": "b2888928029a6df134e85ceb11c26a65f5b2e0873c16eede80a1accf370475d6",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.1.6",
+      "file": "NexusHub-1.1.6-debug.apk",
+      "size": 17924524,
+      "sha256": "30b491552e19b9d97e01c0b972ea5c62d1764ea82d6b9f09d1ca5306b69ddd47",
+      "date": "2026-06-05",
+      "changelog": []
+    },
+    {
+      "version": "1.0.1",
+      "file": "NexusHub-1.0.1-debug.apk",
+      "size": 17541669,
+      "sha256": "902be66058e267216f50f48c7df9a388aea4bdb260161a4e869831569a823d29",
+      "date": "2026-06-05",
+      "changelog": []
+    }
+  ]
+}

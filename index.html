@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#08081A">
+<title>下载 Nexus Hub · Android APK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #08081A;
+    --bg-1: #11111F;
+    --bg-2: #1A1A2E;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.08);
+    --border-2: rgba(255,255,255,0.14);
+    --text: #F5F5FA;
+    --text-dim: #9CA3B8;
+    --text-mute: #5A5A75;
+    --primary: #6366F1;
+    --primary-2: #4F46E5;
+    --accent: #A78BFA;
+    --cyan: #06B6D4;
+    --success: #22D3A5;
+    --warning: #F59E0B;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  html, body { background: var(--bg-0); color: var(--text); }
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ==== Background ==== */
+  .bg-deco { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at top, black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at top, black 20%, transparent 80%);
+  }
+  .bg-mesh-1 {
+    position: absolute; top: -200px; right: -100px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.4), transparent 60%);
+    filter: blur(80px);
+  }
+  .bg-mesh-2 {
+    position: absolute; top: 30%; left: -100px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.25), transparent 60%);
+    filter: blur(80px);
+  }
+
+  /* ==== Layout ==== */
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+  /* ==== Top Nav ==== */
+  .topnav {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(8,8,26,0.6);
+    border-bottom: 1px solid var(--border);
+  }
+  .topnav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-weight: 600; }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+  }
+  .brand-mark svg { width: 16px; height: 16px; color: white; }
+  .brand-name { font-family: "Space Grotesk", sans-serif; font-size: 16px; letter-spacing: -0.3px; }
+  .nav-links { display: flex; gap: 8px; align-items: center; }
+  .nav-link {
+    color: var(--text-dim); text-decoration: none;
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 14px; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--text); background: var(--glass); }
+  .nav-cta {
+    background: var(--text); color: var(--bg-0);
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: transform 0.1s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  /* ==== Hero ==== */
+  .hero { padding: 60px 0 32px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px 6px 6px;
+    background: rgba(34,211,165,0.10);
+    border: 1px solid rgba(34,211,165,0.25);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    color: var(--success);
+    margin-bottom: 20px;
+  }
+  .hero-tag .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 12px var(--success);
+    animation: pulse 2s ease-in-out infinite;
+    margin-left: 6px;
+  }
+  .hero-tag .pill {
+    background: rgba(0,0,0,0.3);
+    padding: 2px 8px; border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .hero h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+  }
+  .hero p { color: var(--text-dim); font-size: 16px; max-width: 540px; }
+
+  /* ==== Card ==== */
+  .card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 2px;
+  }
+  .card-tag {
+    padding: 3px 9px;
+    background: rgba(34,211,165,0.12);
+    color: var(--success);
+    border-radius: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* ==== Big download ==== */
+  .dl-grid { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  @media (max-width: 640px) { .dl-grid { grid-template-columns: 1fr; gap: 24px; } }
+
+  .dl-info .ver {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 36px; font-weight: 600; letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .dl-info .ver-sub {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 28px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    color: white; text-decoration: none;
+    border-radius: 14px;
+    font-size: 17px; font-weight: 600;
+    box-shadow: 0 10px 32px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: all 0.15s;
+    width: 100%;
+    justify-content: center;
+  }
+  .dl-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(99,102,241,0.55); }
+  .dl-btn:active { transform: translateY(0); }
+  .dl-btn svg { width: 22px; height: 22px; }
+
+  .dl-progress {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    animation: slideDown 0.2s ease;
+  }
+  .dl-progress-bar {
+    width: 100%; height: 6px;
+    background: var(--bg-2);
+    border-radius: 3px; overflow: hidden;
+  }
+  .dl-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    width: 0%;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 12px rgba(99,102,241,0.5);
+  }
+  .dl-progress-text {
+    margin-top: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .dl-meta {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    margin-top: 20px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .dl-meta-item { background: var(--bg-1); padding: 12px 14px; }
+  .dl-meta-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; color: var(--text-mute);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 4px;
+  }
+  .dl-meta-value {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ==== QR ==== */
+  .qr-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 16px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+  .qr-wrap img {
+    width: 140px; height: 140px;
+    display: block;
+  }
+  .qr-caption {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: #11111F;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+
+  /* ==== Versions table ==== */
+  .versions {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .versions li {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    transition: background 0.15s;
+  }
+  .versions li:hover { background: var(--glass-2); }
+  .versions li + li { margin-top: 4px; }
+  .v-num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px; font-weight: 600;
+    color: var(--text);
+    min-width: 80px;
+  }
+  .v-num.latest { color: var(--success); }
+  .v-num .badge {
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: rgba(34,211,165,0.15);
+    color: var(--success);
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .v-size {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; color: var(--text-dim);
+    flex: 1;
+  }
+  .v-dl {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    padding: 6px 14px;
+    border: 1px solid var(--border-2);
+    border-radius: 8px;
+    transition: all 0.15s;
+  }
+  .v-dl:hover { background: var(--accent); color: var(--bg-0); border-color: var(--accent); }
+
+  /* ==== Install ==== */
+  .install {
+    background: #08081A;
+    border: 1px solid var(--border-2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    color: var(--text);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    overflow-x: auto;
+  }
+  .install-prompt { color: var(--success); user-select: none; margin-right: 8px; }
+  .install code { color: var(--text); white-space: nowrap; }
+  .install .copy {
+    color: var(--text-dim);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: inherit;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .install .copy:hover { background: var(--glass-2); color: var(--text); }
+
+  /* ==== Changelog ==== */
+  .changelog { list-style: none; padding: 0; }
+  .changelog li {
+    position: relative;
+    padding: 10px 0 10px 28px;
+    border-bottom: 1px dashed var(--border-2);
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .changelog li:last-child { border-bottom: none; }
+  .changelog li::before {
+    content: "▸";
+    position: absolute; left: 8px; top: 10px;
+    color: var(--accent);
+  }
+  .changelog .ver {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+    color: var(--text);
+    margin-right: 8px;
+  }
+  .changelog .ver.latest { color: var(--success); }
+  .changelog .date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--text-mute);
+    margin-left: 8px;
+  }
+  .changelog ul { padding-left: 0; margin-top: 6px; list-style: none; }
+  .changelog ul li { padding: 4px 0 4px 16px; font-size: 13px; border: none; }
+  .changelog ul li::before { content: "–"; color: var(--text-mute); left: 0; }
+
+  /* ==== Footer ==== */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-mute);
+    font-size: 13px;
+    font-family: "JetBrains Mono", monospace;
+    margin-top: 40px;
+  }
+  footer a { color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  footer .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+
+  /* ==== Toast ==== */
+  #toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(0,0,0,0.9);
+    color: white; padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    opacity: 0; transition: all 0.25s ease;
+    pointer-events: none;
+    z-index: 9999;
+    border: 1px solid var(--border-2);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ==== Animations ==== */
+  .reveal { opacity: 0; transform: translateY(16px); animation: reveal 0.6s ease-out forwards; }
+  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+  .reveal:nth-child(1) { animation-delay: 0.05s; }
+  .reveal:nth-child(2) { animation-delay: 0.15s; }
+  .reveal:nth-child(3) { animation-delay: 0.25s; }
+  .reveal:nth-child(4) { animation-delay: 0.35s; }
+  .reveal:nth-child(5) { animation-delay: 0.45s; }
+  .reveal:nth-child(6) { animation-delay: 0.55s; }
+</style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="bg-grid"></div>
+  <div class="bg-mesh-1"></div>
+  <div class="bg-mesh-2"></div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="wrap topnav-inner">
+    <a href="/" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round">
+          <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>
+        </svg>
+      </span>
+      <span class="brand-name">Nexus Hub</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">详情</a>
+      <a href="/download.html" class="nav-link">下载</a>
+      <a href="/download.html" class="nav-cta">立即下载</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-tag reveal">
+      <span class="dot"></span>
+      <span>Latest</span>
+      <span class="pill" id="heroPill">v—.—</span>
+    </div>
+    <h1 class="reveal">下载 APK</h1>
+    <p class="reveal">扫描二维码或点击下方按钮，把 Nexus Hub 安装到你的 Android 设备上。所有历史版本也保留在此页面。</p>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- BIG DOWNLOAD CARD -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">CURRENT RELEASE</div>
+      <div class="card-tag">STABLE</div>
+    </div>
+
+    <div class="dl-grid">
+      <div class="dl-info">
+        <div class="ver" id="latestVer">v—.—</div>
+        <div class="ver-sub" id="latestVerSub">—</div>
+
+        <a class="dl-btn" id="mainDl" href="#" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span id="mainDlText">下载 APK · —</span>
+        </a>
+
+        <div id="dlProgress" class="dl-progress" style="display:none">
+          <div class="dl-progress-bar"><div class="dl-progress-fill" id="dlProgressFill"></div></div>
+          <div class="dl-progress-text" id="dlProgressText">下载中…</div>
+        </div>
+
+        <div class="dl-meta">
+          <div class="dl-meta-item">
+            <div class="dl-meta-label">SIZE</div>
+            <div class="dl-meta-value" id="latestSize">—</div>
+          </div>
+          <div class="dl-meta-item">
+            <div class="dl-meta-label">SHA256</div>
+            <div class="dl-meta-value" id="sha256Value" style="font-size:10px; font-family:'JetBrains Mono',monospace; cursor:pointer" title="点击复制">—</div>
+          </div>
+          <div class="dl-meta-item">
+            <div class="dl-meta-label">MIN</div>
+            <div class="dl-meta-value">Android 7.0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-wrap">
+        <img id="qrImg" src="" alt="QR Code">
+        <div class="qr-caption">SCAN TO INSTALL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTALL METHODS -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">INSTALL VIA ADB</div>
+    </div>
+    <div class="install">
+      <span><span class="install-prompt">$</span><code id="installAdb">adb install -r —</code></span>
+      <button class="copy" id="installAdbCopy">COPY</button>
+    </div>
+    <div class="install">
+      <span><span class="install-prompt">$</span><code id="installCurl">curl -L -o app.apk '—'</code></span>
+      <button class="copy" id="installCurlCopy">COPY</button>
+    </div>
+    <p style="color: var(--text-mute); font-size: 12px; margin-top: 12px;">手机扫码后会直接下载 APK，开启"未知来源"后即可安装。</p>
+  </div>
+
+  <!-- VERSIONS -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">ALL VERSIONS</div>
+      <div style="color: var(--text-mute); font-family: 'JetBrains Mono', monospace; font-size: 11px;"><span id="versionCount">—</span> builds</div>
+    </div>
+    <ul class="versions" id="versionsList"></ul>
+  </div>
+
+  <!-- CHANGELOG -->
+  <div class="card reveal">
+    <div class="card-header">
+      <div class="card-title">CHANGELOG</div>
+    </div>
+    <ul class="changelog" id="changelogList"></ul>
+  </div>
+
+  <footer>
+    <div>NEXUS HUB · Android 论坛客户端 · 始终开源 · MIT License</div>
+    <div class="row">
+      <a href="https://gitee.com/cgw0822/nexushub-pages" target="_blank">Gitee</a>
+      <span>·</span>
+      <a href="/manifest.json" target="_blank">API</a>
+      <span>·</span>
+      <a href="javascript:void(0)" onclick="toast('由 Gitee Pages 静态托管')">Hosted on Gitee Pages</a>
+    </div>
+  </footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+ *  启动：fetch('manifest.json') 后渲染整个页面
+ *  所有版本/URL/SHA/changelog 都从 manifest 读
+ * ========================================================= */
+const MANIFEST_URL = 'manifest.json';
+let MANIFEST = null;
+let LATEST_SHA = '', LATEST_SIZE = 0, LATEST_URL = '';
+
+async function bootstrap() {
+  try {
+    const r = await fetch(MANIFEST_URL, { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    MANIFEST = await r.json();
+  } catch (e) {
+    document.body.insertAdjacentHTML('afterbegin',
+      '<div style="background:#7c2d12;color:#fef3c7;padding:16px;text-align:center;font-family:monospace">' +
+      '⚠ manifest.json 加载失败: ' + e.message + '<br>请确认 manifest.json 与本页面在同一目录' +
+      '</div>');
+    return;
+  }
+  renderLatest();
+  renderVersionsList();
+  renderChangelog();
+  bindLatestCopy();
+  bindMainDownload();
+  bindAdbCurlCopy();
+  bindOldVersions();
+}
+
+/* =========================================================
+ *  大卡片（CURRENT RELEASE）
+ * ========================================================= */
+function renderLatest() {
+  const v = MANIFEST.versions.find(x => x.version === MANIFEST.latest);
+  if (!v) return;
+  LATEST_SHA = v.sha256;
+  LATEST_SIZE = v.size;
+  LATEST_URL = MANIFEST.baseUrl + '/' + v.file;
+  const sizeMB = (v.size / 1024 / 1024).toFixed(1);
+
+  document.getElementById('heroPill').textContent = 'v' + v.version;
+  document.getElementById('latestVer').textContent = 'v' + v.version;
+  document.getElementById('latestVerSub').textContent = v.date + ' · Build ' + v.date + ' ' + v.version.slice(-4);
+  document.getElementById('mainDlText').textContent = '下载 APK · ' + sizeMB + ' MB';
+  document.getElementById('mainDl').href = LATEST_URL;
+  document.getElementById('mainDl').setAttribute('download', v.file);
+  document.getElementById('latestSize').textContent = sizeMB + ' MB';
+  const shaEl = document.getElementById('sha256Value');
+  shaEl.textContent = v.sha256.slice(0, 8) + '…' + v.sha256.slice(-6);
+  shaEl.dataset.sha = v.sha256;
+  // QR
+  document.getElementById('qrImg').src =
+    'https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=2&data=' + encodeURIComponent(LATEST_URL);
+
+  // adb / curl 命令
+  document.getElementById('installAdb').textContent = 'adb install -r ' + v.file;
+  document.getElementById('installCurl').textContent = "curl -L -o app.apk '" + LATEST_URL + "'";
+}
+
+/* =========================================================
+ *  全部历史版本
+ * ========================================================= */
+function renderVersionsList() {
+  const ul = document.getElementById('versionsList');
+  ul.innerHTML = '';
+  document.getElementById('versionCount').textContent = MANIFEST.versions.length;
+  MANIFEST.versions.forEach(v => {
+    const isLatest = v.version === MANIFEST.latest;
+    const url = MANIFEST.baseUrl + '/' + v.file;
+    const sizeMB = (v.size / 1024 / 1024).toFixed(1);
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="v-num ${isLatest ? 'latest' : ''}">v${v.version}${isLatest ? '<span class="badge">LATEST</span>' : ''}</span>
+      <span class="v-size">${sizeMB} MB · ${v.date}</span>
+      <a class="v-dl" data-ver="${v.version}" href="${url}" download>下载</a>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+/* =========================================================
+ *  Changelog
+ * ========================================================= */
+function renderChangelog() {
+  const ul = document.getElementById('changelogList');
+  ul.innerHTML = '';
+  MANIFEST.versions.forEach(v => {
+    const isLatest = v.version === MANIFEST.latest;
+    const li = document.createElement('li');
+    let html = `<span class="ver ${isLatest ? 'latest' : ''}">v${v.version}</span><span class="date">${v.date}</span>`;
+    if (v.changelog && v.changelog.length) {
+      html += '<ul>' + v.changelog.map(c => '<li>' + escapeHtml(c) + '</li>').join('') + '</ul>';
+    }
+    li.innerHTML = html;
+    ul.appendChild(li);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+/* =========================================================
+ *  绑定交互
+ * ========================================================= */
+function bindLatestCopy() {
+  const shaEl = document.getElementById('sha256Value');
+  shaEl.addEventListener('click', () => {
+    navigator.clipboard.writeText(shaEl.dataset.sha);
+    toast('已复制 SHA256: ' + shaEl.dataset.sha.slice(0, 16) + '…');
+  });
+}
+
+function bindMainDownload() {
+  document.getElementById('mainDl').addEventListener('click', async (e) => {
+    e.preventDefault();
+    await smartDownload(LATEST_URL, document.getElementById('mainDl').getAttribute('download'));
+  });
+}
+
+function bindAdbCurlCopy() {
+  document.getElementById('installAdbCopy').addEventListener('click', () => {
+    const txt = document.getElementById('installAdb').textContent;
+    navigator.clipboard.writeText(txt);
+    toast('已复制: ' + txt.slice(0, 40));
+  });
+  document.getElementById('installCurlCopy').addEventListener('click', () => {
+    const txt = document.getElementById('installCurl').textContent;
+    navigator.clipboard.writeText(txt);
+    toast('已复制: ' + txt.slice(0, 40));
+  });
+}
+
+function bindOldVersions() {
+  document.querySelectorAll('.versions .v-dl').forEach(a => {
+    a.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      navigator.clipboard.writeText(a.href);
+      toast('已复制 v' + a.dataset.ver + ' 链接');
+    });
+  });
+}
+
+/* =========================================================
+ *  Toast 提示
+ * ========================================================= */
+const _toastEl = document.getElementById('toast');
+let _toastTimer = null;
+function toast(msg, ms = 2000) {
+  _toastEl.textContent = msg;
+  _toastEl.classList.add('show');
+  if (_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => _toastEl.classList.remove('show'), ms);
+}
+
+/* =========================================================
+ *  智能下载：4 路 Range 分块 + SHA256 校验 + 进度条
+ * ========================================================= */
+const CHUNK_COUNT = 4;
+const MAX_RETRIES = 5;
+const TOLERANCE   = 1024;
+
+function hex(buffer) {
+  const arr = new Uint8Array(buffer);
+  let s = '';
+  for (let i = 0; i < arr.length; i++) s += arr[i].toString(16).padStart(2, '0');
+  return s;
+}
+
+function showProgress(pct, text) {
+  const wrap = document.getElementById('dlProgress');
+  wrap.style.display = 'block';
+  document.getElementById('dlProgressFill').style.width = pct + '%';
+  document.getElementById('dlProgressText').textContent = text;
+}
+
+function hideProgress() {
+  document.getElementById('dlProgress').style.display = 'none';
+}
+
+async function fetchRange(url, start, end, attempt) {
+  const resp = await fetch(url, {
+    headers: { 'Range': 'bytes=' + start + '-' + end }
+  });
+  if (!resp.ok && resp.status !== 206) {
+    throw new Error('Range request failed: ' + resp.status);
+  }
+  const buf = await resp.arrayBuffer();
+  if (buf.byteLength !== (end - start + 1) && resp.status === 206) {
+    // 一些服务器会返回整个文件或部分内容，这里宽容处理
+    if (Math.abs(buf.byteLength - (end - start + 1)) > TOLERANCE) {
+      if (attempt < MAX_RETRIES) {
+        await new Promise(r => setTimeout(r, 300 * attempt));
+        return fetchRange(url, start, end, attempt + 1);
+      }
+      throw new Error('Chunk size mismatch: ' + buf.byteLength + ' vs ' + (end - start + 1));
+    }
+  }
+  return buf;
+}
+
+async function smartDownload(url, filename) {
+  showProgress(0, '准备中…');
+  try {
+    // 1. HEAD 拿 size
+    const head = await fetch(url, { method: 'HEAD' });
+    if (!head.ok) throw new Error('HEAD ' + head.status);
+    const total = parseInt(head.headers.get('content-length') || '0');
+    if (!total) throw new Error('无法获取文件大小');
+
+    // 2. 4 路分块
+    const chunkSize = Math.ceil(total / CHUNK_COUNT);
+    const parts = [];
+    let downloaded = 0;
+
+    showProgress(0, '0% · 0/' + CHUNK_COUNT + ' 块');
+
+    for (let i = 0; i < CHUNK_COUNT; i++) {
+      const start = i * chunkSize;
+      const end = Math.min(start + chunkSize - 1, total - 1);
+      const idx = i;
+      const p = (async () => {
+        const buf = await fetchRange(url, start, end, 1);
+        parts[idx] = buf;
+        downloaded += buf.byteLength;
+        const pct = Math.min(100, downloaded / total * 100);
+        const done = parts.filter(x => x).length;
+        showProgress(pct, pct.toFixed(0) + '% · ' + done + '/' + CHUNK_COUNT + ' 块');
+      })();
+      parts.push(p);
+    }
+    await Promise.all(parts.filter(x => x instanceof Promise));
+
+    // 3. 拼装
+    showProgress(100, '校验 SHA256…');
+    const blob = new Blob(parts.filter(x => x));
+    const buf = await blob.arrayBuffer();
+
+    // 4. SHA 校验
+    const digest = await crypto.subtle.digest('SHA-256', buf);
+    const hash = hex(digest);
+    if (LATEST_SHA && hash !== LATEST_SHA) {
+      throw new Error('SHA256 不匹配\n期望: ' + LATEST_SHA + '\n实际: ' + hash + '\n文件可能已损坏，请重试');
+    }
+
+    // 5. 触发下载
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+
+    hideProgress();
+    toast('✓ 下载完成，SHA256 校验通过');
+  } catch (e) {
+    hideProgress();
+    toast('✗ ' + e.message, 5000);
+    console.error(e);
+    // 失败回退：直接打开
+    setTimeout(() => window.open(url, '_blank'), 1000);
+  }
+}
+
+/* =========================================================
+ *  启动
+ * ========================================================= */
+bootstrap();
+</script>
+</body>
+</html>
