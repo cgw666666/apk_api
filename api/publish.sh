@@ -17,6 +17,8 @@
 #   5. 同步 manifest.json 到 apk_api（baseUrl 指向 jsDelivr）
 #   6. git commit + push apk_api
 #   7. Vercel 检测到 apk_api 推送 → 30-60 秒后自动重新部署
+#   8. 强制更新 latest tag → jsDelivr 5-15 分钟内同步新 APK
+#   ⚠️ 不要在 apk_api 做 empty commit 触发额外部署，会被 Vercel rate-limit 屏蔽！
 
 set -e
 
@@ -27,7 +29,9 @@ GITHUB_REPO="${GITHUB_REPO:-apk_api}"      # 网页代码仓库
 APK_REPO="${APK_REPO:-hub_apk}"             # APK 存储仓库
 BRANCH="${BRANCH:-main}"
 SITE_URL="${SITE_URL:-https://cgw-lime.vercel.app}"
-BASE_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${APK_REPO}@${BRANCH}/apks"
+# jsDelivr 不认 GitHub 分支名（main/master），必须用 tag 或 commit SHA
+# 每次发版会更新 `latest` tag，jsDelivr 立刻同步
+BASE_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${APK_REPO}@latest/apks"
 
 # 本地两个仓库的路径
 API_PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -158,13 +162,14 @@ else
     git remote set-url origin "https://github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
 fi
 
-# ─────── 6. 触发 Vercel 重新部署（如果没 push 的话） ───────
-log "[6/6] 触发 Vercel 重新部署（empty commit 强制 rebuild）..."
-cd "$API_PROJECT_DIR"
-git commit --allow-empty -m "trigger: redeploy for v$VERSION" 2>&1 | tail -2
-PUSH_URL_API="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
-timeout 90 git -c credential.helper= push "$PUSH_URL_API" "$BRANCH" 2>&1 | tail -3
-git remote set-url origin "https://github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
+# ─────── 6. 同步 latest tag，让 jsDelivr 立刻拿到新 APK ───────
+log "[6/6] 同步 latest tag → jsDelivr..."
+cd "$APK_PROJECT_DIR"
+# 强制把 latest tag 移到当前 commit（jsDelivr 缓存立即失效）
+git tag -f latest 2>&1
+PUSH_TAGS_URL="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${APK_REPO}.git"
+timeout 60 git -c credential.helper= push --force --tags "$PUSH_TAGS_URL" 2>&1 | tail -3
+git remote set-url origin "https://github.com/${GITHUB_USER}/${APK_REPO}.git"
 
 # ─────── 7. 总结 ───────
 APK_URL="${BASE_URL}/${APK_FILE}"

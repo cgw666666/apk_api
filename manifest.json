@@ -1,6 +1,6 @@
 {
   "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@main/apks",
+  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
     {
