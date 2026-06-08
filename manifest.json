@@ -1,8 +1,23 @@
 {
-  "latest": "1.26.6.8.1404",
+  "latest": "1.26.6.8.1438",
   "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
+    {
+      "version": "1.26.6.8.1438",
+      "file": "NexusHub-1.26.6.8.1438-debug.apk",
+      "size": 19006074,
+      "sha256": "46a374a0a466ad8a1ef43d3f350678c94e57eb3e4791abf9d3305860cbd7a5d3",
+      "date": "2026-06-08",
+      "changelog": [
+        "朋友圈发布：仿微信朋友圈式完整发布页面",
+        "支持图片多选（最多 9 张）+ 删除 + Coil 预览",
+        "支持表情选择器（80 个常用 emoji），插入到光标位置",
+        "顶栏关闭按钮带放弃确认对话框",
+        "发表按钮带加载指示 + 防抖",
+        "新增 Moment.imageUris 字段"
+      ]
+    },
     {
       "version": "1.26.6.8.1404",
       "file": "NexusHub-1.26.6.8.1404-debug.apk",
