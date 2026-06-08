@@ -1,8 +1,23 @@
 {
-  "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@main/apks",
+  "latest": "1.26.6.8.1315",
+  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
+    {
+      "version": "1.26.6.8.1315",
+      "file": "app-debug.apk",
+      "size": 18224101,
+      "sha256": "b57c46477b7d898a9f6dd157ed4dd7eb86e84fc98dd6fb826cf620b05a00b7f2",
+      "date": "2026-06-08",
+      "changelog": [
+        "用户主页「关注」按钮支持切换状态（关注/已关注）",
+        "「私信」按钮跳转到真实 ChatScreen 覆盖层",
+        "新增 ChatViewModel：按 userId 索引消息 + 模拟对方回复",
+        "新增 9 位用户的 mock 私信开场白（首次进聊天有内容）",
+        "ActionPillButton 加缩放回弹 + 「已关注」描边样式",
+        "修了 publish.sh 之前 empty commit 触发 Vercel rate-limit 的问题"
+      ]
+    },
     {
       "version": "1.26.6.7.0944",
       "file": "NexusHub-1.26.6.7.0944-debug.apk",
