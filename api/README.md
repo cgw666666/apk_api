@@ -4,7 +4,7 @@
 
 ## 概述
 
-静态网页托管在 **Gitee Pages**（`https://cgw0822.gitee.io/nexushub-pages/`）。
+静态网页托管在 **Gitee Pages**（`https://cgw0822.gitee.io/apk_api/`）。
 - `index.html` — 下载页，**前端 JS 自动从 `manifest.json` 读所有版本信息**
 - `manifest.json` — 版本清单（latest / baseUrl / versions[]）
 - `apks/*.apk` — APK 文件
@@ -23,7 +23,7 @@ agent 每次发新版本只需要调一次 `api/upload.sh` 脚本，自动完成
 ```bash
 export GITEE_TOKEN="xxxxxxxxxxxx"   # Gitee 私人令牌
 export GITEE_USER="cgw0822"
-export GITEE_REPO="nexushub-pages"
+export GITEE_REPO="apk_api"
 ```
 
 **GITEE_TOKEN 从哪来**（不是密码，是**私人令牌**）：
@@ -55,8 +55,8 @@ bash api/upload.sh 1.26.6.7.0944 /workspace/dist/NexusHub-1.26.6.7.0944-debug.ap
 [14:30:02] ✓ APK 上传成功
 [14:30:03] ✓ manifest.json 上传成功
 ==== 完成 ====
-  访问: https://cgw0822.gitee.io/nexushub-pages/
-  APK  : https://cgw0822.gitee.io/nexushub-pages/apks/NexusHub-1.26.6.7.0944-debug.apk
+  访问: https://cgw0822.gitee.io/apk_api/
+  APK  : https://cgw0822.gitee.io/apk_api/apks/NexusHub-1.26.6.7.0944-debug.apk
   Gitee Pages 会在 1-3 分钟内自动重新部署
 ```
 
@@ -88,7 +88,7 @@ bash api/upload.sh 1.26.6.7.0944 /workspace/dist/NexusHub-1.26.6.7.0944-debug.ap
 ```json
 {
   "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cgw0822.gitee.io/nexushub-pages/apks",
+  "baseUrl": "https://cgw0822.gitee.io/apk_api/apks",
   "minAndroid": "7.0",
   "versions": [
     {

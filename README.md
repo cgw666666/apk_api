@@ -4,12 +4,12 @@
 
 ## 在线地址
 
-**https://cgw0822.gitee.io/nexushub-pages/**
+**https://cgw0822.gitee.io/apk_api/**
 
 ## 文件结构
 
 ```
-nexushub-pages/
+apk_api/
 ├── index.html       # 下载页（动态从 manifest.json 读取所有版本）
 ├── manifest.json    # 版本清单（latest/baseUrl/versions[]）
 ├── apks/            # 所有 APK 文件
@@ -27,20 +27,20 @@ nexushub-pages/
 
 1. **仓库推送**：
    ```bash
-   cd /workspace/nexushub-pages
+   cd /workspace/apk_api
    git init
-   git remote add origin https://gitee.com/cgw0822/nexushub-pages.git
+   git remote add origin https://gitee.com/cgw0822/apk_api.git
    git add .
    git commit -m "initial commit"
    git push -u origin master
    ```
 
 2. **开启 Gitee Pages**：
-   - 打开 https://gitee.com/cgw0822/nexushub-pages
+   - 打开 https://gitee.com/cgw0822/apk_api
    - 顶部菜单 **服务** → **Gitee Pages** → **启动**
    - 部署分支选 `master`，启动即可
 
-3. **访问**：`https://cgw0822.gitee.io/nexushub-pages/`
+3. **访问**：`https://cgw0822.gitee.io/apk_api/`
 
 ## 发布新版本
 

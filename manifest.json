@@ -1,6 +1,6 @@
 {
   "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cgw0822.gitee.io/nexushub-pages/apks",
+  "baseUrl": "https://cgw0822.gitee.io/apk_api/apks",
   "minAndroid": "7.0",
   "versions": [
     {

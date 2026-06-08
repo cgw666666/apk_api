@@ -4,8 +4,8 @@
 # 用法：
 #   export GITEE_TOKEN="xxx"   # Gitee 私人令牌（在 https://gitee.com/profile/personal_access_tokens 创建）
 #   export GITEE_USER="cgw0822"
-#   export GITEE_REPO="nexushub-pages"
-#   bash /workspace/nexushub-pages/api/upload.sh <version> <apk_path> [changelog...]
+#   export GITEE_REPO="apk_api"
+#   bash /workspace/apk_api/api/upload.sh <version> <apk_path> [changelog...]
 #
 # 例子（上传 v1.26.6.7.0944 + 3 条 changelog）：
 #   bash upload.sh 1.26.6.7.0944 /workspace/dist/NexusHub-1.26.6.7.0944-debug.apk \
@@ -24,7 +24,7 @@ set -e
 # ─────── 校验 ───────
 : "${GITEE_TOKEN:?需要 export GITEE_TOKEN=... （Gitee 私人令牌）}"
 : "${GITEE_USER:?需要 export GITEE_USER=... （Gitee 用户名）}"
-GITEE_REPO="${GITEE_REPO:-nexushub-pages}"
+GITEE_REPO="${GITEE_REPO:-apk_api}"
 API="https://gitee.com/api/v5"
 
 VERSION="${1:-}"
