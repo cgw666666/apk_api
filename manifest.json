@@ -1,8 +1,22 @@
 {
-  "latest": "1.26.6.8.1702",
+  "latest": "1.26.6.8.1741",
   "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
+    {
+      "version": "1.26.6.8.1741",
+      "file": "NexusHub-1.26.6.8.1741-debug.apk",
+      "size": 19006074,
+      "sha256": "0f28c4bb2796b6a5f4e069a11db3daf88335ed5737ff0b39f9a8dba5b8857a97",
+      "date": "2026-06-08",
+      "changelog": [
+        "统一所有页面顶部栏为 QQ 风格",
+        "重写 AppTopBar：左侧头像(带绿点)+ 状态文字 + 中间标题 + 右侧通知铃铛",
+        "论坛/社交/购物页面统一使用 AppTopBar",
+        "移除 SocialScreen 内部 TopAppBar / ForumScreen 内部 Row 标题 / ShoppingScreen 内部 Row 标题",
+        "通知点击有红点 + 铃铛摇晃动画"
+      ]
+    },
     {
       "version": "1.26.6.8.1702",
       "file": "NexusHub-1.26.6.8.1702-debug.apk",
