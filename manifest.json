@@ -1,8 +1,24 @@
 {
-  "latest": "1.26.6.8.1315",
+  "latest": "1.26.6.8.1404",
   "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
+    {
+      "version": "1.26.6.8.1404",
+      "file": "app-debug.apk",
+      "size": 18240485,
+      "sha256": "a04b7216006aa2f4976dedfaa9010f80cb3f1f61fc3d3a8abbd23ab29c93cb4c",
+      "date": "2026-06-08",
+      "changelog": [
+        "社交模块完整化：TopAppBar + Tab 切换（消息 / 朋友圈）+ AnimatedContent",
+        "消息 Tab：ChatRoom 列表 + 左滑删除 + 未读红点 + 跳转到 ChatScreen",
+        "朋友圈 Tab：MomentCard + 点赞心形切换 + 数字滚动动画 + 浮动发布按钮",
+        "新增 PublishMomentSheet：文字 + 多图选择（Mock 色块）",
+        "底栏社交 Tab 角标：所有未读消息总数",
+        "拆分 MomentsViewModel（动态列表）/ SocialViewModel（UI 状态）/ ChatViewModel（聊天数据）",
+        "新增 ChatRoom 数据模型 + MockData.mockChatRooms（6 个会话）"
+      ]
+    },
     {
       "version": "1.26.6.8.1315",
       "file": "NexusHub-1.26.6.8.1315-debug.apk",
