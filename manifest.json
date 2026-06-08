@@ -1,8 +1,22 @@
 {
-  "latest": "1.26.6.8.1438",
+  "latest": "1.26.6.8.1702",
   "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@latest/apks",
   "minAndroid": "7.0",
   "versions": [
+    {
+      "version": "1.26.6.8.1702",
+      "file": "NexusHub-1.26.6.8.1702-debug.apk",
+      "size": 19006074,
+      "sha256": "51470e1e55ac230be8d29bf960871f8e588a6a7cd1b790b863e8cdd9f458d57f",
+      "date": "2026-06-08",
+      "changelog": [
+        "修复发布动态页面文字不可见问题",
+        "TextField 替换 BasicTextField + decorationBox",
+        "显式 colors 锁定 onSurface 文字色",
+        "placeholder + 光标 + 选择高亮全部硬编码",
+        "适配深浅模式"
+      ]
+    },
     {
       "version": "1.26.6.8.1438",
       "file": "NexusHub-1.26.6.8.1438-debug.apk",
