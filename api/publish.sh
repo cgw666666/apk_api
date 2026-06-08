@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# NexusHub 新版本发布脚本（用 git push 触发 Vercel 自动部署）
+# NexusHub 新版本发布脚本（拆仓库版：hub_apk + apk_api）
 #
 # 用法：
-#   export GITHUB_PAT="github_pat_xxx"  # GitHub 私人令牌
+#   export GITHUB_PAT="github_pat_xxx"
 #   bash /workspace/nexushub-pages/api/publish.sh <version> <apk_path> [changelog line 1] [changelog line 2] ...
 #
 # 例子：
@@ -11,22 +11,27 @@
 #
 # 它会做：
 #   1. 算 SHA256 + size
-#   2. 复制 APK 到 apks/ 目录
-#   3. 更新 manifest.json（添加新版本 + 设为 latest）
-#   4. git commit + push 到 GitHub
-#   5. Vercel 检测到推送 → 30-60 秒后自动重新部署
-#   6. 用户访问 https://cgw-lime.vercel.app/ 看到新版本
+#   2. 复制 APK 到 hub_apk/apks/
+#   3. 更新 hub_apk/manifest.json（添加新版本 + 设为 latest）
+#   4. git commit + push hub_apk
+#   5. 同步 manifest.json 到 apk_api（baseUrl 指向 jsDelivr）
+#   6. git commit + push apk_api
+#   7. Vercel 检测到 apk_api 推送 → 30-60 秒后自动重新部署
 
 set -e
 
 # ─────── 校验 ───────
 : "${GITHUB_PAT:?需要 export GITHUB_PAT=... （GitHub 私人令牌）}"
 GITHUB_USER="${GITHUB_USER:-cgw666666}"
-GITHUB_REPO="${GITHUB_REPO:-apk_api}"
+GITHUB_REPO="${GITHUB_REPO:-apk_api}"      # 网页代码仓库
+APK_REPO="${APK_REPO:-hub_apk}"             # APK 存储仓库
 BRANCH="${BRANCH:-main}"
 SITE_URL="${SITE_URL:-https://cgw-lime.vercel.app}"
+BASE_URL="https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${APK_REPO}@${BRANCH}/apks"
 
-PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+# 本地两个仓库的路径
+API_PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+APK_PROJECT_DIR="${APK_PROJECT_DIR:-/workspace/hub_apk}"
 
 VERSION="${1:-}"
 APK_PATH="${2:-}"
@@ -36,12 +41,14 @@ CHANGELOG_LINES=("$@")
 if [ -z "$VERSION" ] || [ -z "$APK_PATH" ]; then
     echo "用法: $0 <version> <apk_path> [changelog line 1] [changelog line 2] ..."
     echo ""
-    echo "环境变量："
-    echo "  GITHUB_PAT    GitHub 私人令牌（必填）"
-    echo "  GITHUB_USER   默认 cgw666666"
-    echo "  GITHUB_REPO   默认 apk_api"
-    echo "  BRANCH        默认 main"
-    echo "  SITE_URL      默认 https://cgw-lime.vercel.app"
+    echo "环境变量（默认值通常不用改）："
+    echo "  GITHUB_PAT     GitHub 私人令牌（必填）"
+    echo "  GITHUB_USER    默认 cgw666666"
+    echo "  GITHUB_REPO    网页代码仓库，默认 apk_api"
+    echo "  APK_REPO       APK 存储仓库，默认 hub_apk"
+    echo "  BRANCH         默认 main"
+    echo "  SITE_URL       默认 https://cgw-lime.vercel.app"
+    echo "  APK_PROJECT_DIR  本地 hub_apk 仓库路径，默认 /workspace/hub_apk"
     exit 1
 fi
 
@@ -68,18 +75,27 @@ log "sha256:     $APK_SHA"
 log "date:       $APK_DATE"
 log "changelog:  ${#CHANGELOG_LINES[@]} lines"
 
-# ─────── 1. 复制 APK 到 apks/ 目录 ───────
-log "复制 APK 到 $PROJECT_DIR/apks/$APK_FILE..."
-cp -f "$APK_PATH" "$PROJECT_DIR/apks/$APK_FILE"
+# ─────── 1. 复制 APK 到 hub_apk/apks/ ───────
+log "[1/6] 复制 APK 到 $APK_PROJECT_DIR/apks/$APK_FILE..."
+cp -f "$APK_PATH" "$APK_PROJECT_DIR/apks/$APK_FILE"
 
-# ─────── 2. 更新 manifest.json ───────
-log "更新 manifest.json..."
+# ─────── 2. 更新 hub_apk 的 manifest.json ───────
+log "[2/6] 更新 hub_apk/manifest.json..."
+MANIFEST_FILE="$APK_PROJECT_DIR/manifest.json"
+
+# 如果 manifest.json 不存在则初始化
+if [ ! -f "$MANIFEST_FILE" ]; then
+    echo "{\"latest\":\"\",\"baseUrl\":\"$BASE_URL\",\"minAndroid\":\"7.0\",\"versions\":[]}" > "$MANIFEST_FILE"
+fi
+
 python3 << PYEOF
-import json, os
-mf_path = '$PROJECT_DIR/manifest.json'
+import json
+mf_path = '$MANIFEST_FILE'
 with open(mf_path) as f:
     m = json.load(f)
 
+# 确保 baseUrl 是新的
+m['baseUrl'] = '$BASE_URL'
 m['latest'] = '$VERSION'
 
 # 找现有版本
@@ -112,27 +128,52 @@ with open(mf_path, 'w', encoding='utf-8') as f:
 print('  manifest.json 已写入')
 PYEOF
 
-# ─────── 3. git commit + push ───────
-cd "$PROJECT_DIR"
-log "git add..."
-git add apks/"$APK_FILE" manifest.json
-
-log "git commit..."
+# ─────── 3. git commit + push hub_apk ───────
+log "[3/6] git commit + push hub_apk..."
+cd "$APK_PROJECT_DIR"
+git add "apks/$APK_FILE" manifest.json 2>&1 | tail -2
 git commit -m "release: v$VERSION
 
 $(printf -- '- %s\n' "${CHANGELOG_LINES[@]}")" 2>&1 | tail -3
 
-log "git push to GitHub..."
-PUSH_URL="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
-timeout 90 git -c credential.helper= push "$PUSH_URL" "$BRANCH" 2>&1 | tail -5
+PUSH_URL="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${APK_REPO}.git"
+timeout 90 git -c credential.helper= push "$PUSH_URL" "$BRANCH" 2>&1 | tail -3
+git remote set-url origin "https://github.com/${GITHUB_USER}/${APK_REPO}.git"
 
-# 清理 remote URL（不保存凭证到 .git/config）
+# ─────── 4. 同步 manifest.json 到 apk_api ───────
+log "[4/6] 同步 manifest.json 到 apk_api..."
+cp -f "$MANIFEST_FILE" "$API_PROJECT_DIR/manifest.json"
+
+# ─────── 5. git commit + push apk_api ───────
+log "[5/6] git commit + push apk_api..."
+cd "$API_PROJECT_DIR"
+git add manifest.json
+# 只有有变化时才 commit
+if git diff --cached --quiet; then
+    warn "apk_api manifest.json 无变化，跳过 commit/push"
+else
+    git commit -m "manifest: bump to v$VERSION" 2>&1 | tail -3
+    PUSH_URL_API="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
+    timeout 90 git -c credential.helper= push "$PUSH_URL_API" "$BRANCH" 2>&1 | tail -3
+    git remote set-url origin "https://github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
+fi
+
+# ─────── 6. 触发 Vercel 重新部署（如果没 push 的话） ───────
+log "[6/6] 触发 Vercel 重新部署（empty commit 强制 rebuild）..."
+cd "$API_PROJECT_DIR"
+git commit --allow-empty -m "trigger: redeploy for v$VERSION" 2>&1 | tail -2
+PUSH_URL_API="https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
+timeout 90 git -c credential.helper= push "$PUSH_URL_API" "$BRANCH" 2>&1 | tail -3
 git remote set-url origin "https://github.com/${GITHUB_USER}/${GITHUB_REPO}.git"
 
-# ─────── 4. 总结 ───────
+# ─────── 7. 总结 ───────
+APK_URL="${BASE_URL}/${APK_FILE}"
 log ""
 log "==== 完成 ===="
-log "  访问: ${G}${SITE_URL}/${N}"
-log "  APK  : ${G}${SITE_URL}/apks/${APK_FILE}${N}"
-log "  Vercel 会在 30-90 秒内自动重新部署"
-log "  部署完成后用户刷新就能看到新版本"
+log "  网页:    ${G}${SITE_URL}/${N}"
+log "  APK:     ${G}${APK_URL}${N}"
+log "  Vercel 会在 30-60 秒内自动重新部署"
+log "  jsDelivr 会在 5-15 分钟内同步新 APK"
+log ""
+log "  提示：等 Vercel 重新部署完后，访问 ${SITE_URL}/ 应该看到 v$VERSION"
+log "  提示：等 jsDelivr 同步完后，点下载按钮才能下到 ${APK_FILE}"

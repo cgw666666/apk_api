@@ -1,94 +1,87 @@
-# NexusHub Pages 上传 API
+# NexusHub 发布 API
 
-接口说明 + 调用方法（agent 用的）。
+新版本发布流程（agent 用的）。
 
 ## 概述
 
-静态网页托管在 **Gitee Pages**（`https://cgw0822.gitee.io/apk_api/`）。
-- `index.html` — 下载页，**前端 JS 自动从 `manifest.json` 读所有版本信息**
-- `manifest.json` — 版本清单（latest / baseUrl / versions[]）
-- `apks/*.apk` — APK 文件
+整个系统由两个仓库组成：
 
-agent 每次发新版本只需要调一次 `api/upload.sh` 脚本，自动完成：
-1. 算 SHA256 + size
-2. 拉取并更新 `manifest.json`（添加新版本 + 设为 latest）
-3. 上传 APK 到 `apks/`
-4. 上传 `manifest.json`
-5. Gitee Pages 1-3 分钟自动重新部署
+| 仓库 | 内容 | 托管 |
+|---|---|---|
+| [cgw666666/apk_api](https://github.com/cgw666666/apk_api) | 网页代码 (index.html + manifest.json) | Vercel → https://cgw-lime.vercel.app/ |
+| [cgw666666/hub_apk](https://github.com/cgw666666/hub_apk) | APK 文件 (apks/*.apk) | jsDelivr CDN |
+
+`publish.sh` 一次跑完所有发布动作。
 
 ## 调用
 
 ### 第一次：设置环境变量
 
 ```bash
-export GITEE_TOKEN="xxxxxxxxxxxx"   # Gitee 私人令牌
-export GITEE_USER="cgw0822"
-export GITEE_REPO="apk_api"
+export GITHUB_PAT="github_pat_xxx"   # GitHub 私人令牌
+# 可选（默认值就是下面这些）
+export GITHUB_USER="cgw666666"
+export GITHUB_REPO="apk_api"          # 网页代码仓库
+export APK_REPO="hub_apk"             # APK 存储仓库
+export BRANCH="main"
+export SITE_URL="https://cgw-lime.vercel.app"
 ```
 
-**GITEE_TOKEN 从哪来**（不是密码，是**私人令牌**）：
-1. 打开 https://gitee.com/profile/personal_access_tokens
-2. 点击 "生成新令牌"
-3. 权限勾选：`projects`（读写项目）
-4. 提交后会显示一长串 token（**只显示一次**，立即复制保存）
+**GITHUB_PAT 从哪来**（不是密码，是个人访问令牌）：
+1. 打开 https://github.com/settings/tokens
+2. 右上角 "Generate new token" → "Generate new token (classic)"
+3. Note: `apk_api_deploy`
+4. Expiration: `No expiration`
+5. Select scopes: **只勾选 `repo`**
+6. 点 "Generate token" → **立刻复制**那串 `ghp_...` 或 `github_pat_...`
 
-### 上传新版本
+### 发布新版本
 
 ```bash
-bash api/upload.sh <version> <apk_path> [changelog line 1] [changelog line 2] ...
+bash api/publish.sh <version> <apk_path> [changelog line 1] [changelog line 2] ...
 ```
 
 **例子**：
 ```bash
-bash api/upload.sh 1.26.6.7.0944 /workspace/dist/NexusHub-1.26.6.7.0944-debug.apk \
-    "用户主页功能：点击作者头像/昵称可跳转个人主页" \
-    "评论长按弹出操作菜单" \
+bash publish.sh 1.26.6.7.1200 /workspace/dist/NexusHub-1.26.6.7.1200-debug.apk \
+    "用户主页功能" \
+    "评论长按操作菜单" \
     "APK 版本号格式修复"
 ```
 
+**自动完成**：
+1. 算 SHA256 + size
+2. 复制 APK 到 hub_apk/apks/
+3. 拉取 hub_apk 最新 manifest.json（如有），加新版本（设为 latest）
+4. git commit + push 到 **两个仓库**（hub_apk + apk_api）
+5. Vercel 检测到 apk_api 推送 → 30-60 秒自动重新部署
+6. jsDelivr 5-15 分钟内同步新 APK（用户可能需要等一会儿才能下到新版本）
+
 **输出**：
 ```
-[14:30:01] version:    1.26.6.7.0944
-[14:30:01] file:       NexusHub-1.26.6.7.0944-debug.apk
+[14:30:01] version:    1.26.6.7.1200
+[14:30:01] file:       NexusHub-1.26.6.7.1200-debug.apk
 [14:30:01] size:       18191274 bytes (17.3 MB)
-[14:30:01] sha256:     74c84adfab36f5087260d9aaa53af475fe1c19f5d8b1c4749cb4fae15fd3da98
-[14:30:02] ✓ APK 上传成功
-[14:30:03] ✓ manifest.json 上传成功
+[14:30:01] sha256:     abc123...
+[14:30:02]   复制 APK 到 hub_apk
+[14:30:03]   更新 hub_apk 的 manifest.json
+[14:30:04]   git push hub_apk
+[14:30:06]   git push apk_api
 ==== 完成 ====
-  访问: https://cgw0822.gitee.io/apk_api/
-  APK  : https://cgw0822.gitee.io/apk_api/apks/NexusHub-1.26.6.7.0944-debug.apk
-  Gitee Pages 会在 1-3 分钟内自动重新部署
+  访问: https://cgw-lime.vercel.app/
+  APK  : https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@main/apks/NexusHub-1.26.6.7.1200-debug.apk
+  Vercel 会在 30-60 秒内自动重新部署
+  jsDelivr 会在 5-15 分钟内同步新 APK
 ```
-
-## 底层 Gitee API
-
-如果不想用脚本，可以直接调 Gitee API：
-
-| 用途 | Method | Endpoint |
-|---|---|---|
-| 读 manifest.json | GET | `/repos/{user}/{repo}/contents/manifest.json` |
-| 写 manifest.json | POST / PUT | `/repos/{user}/{repo}/contents/manifest.json` |
-| 上传 APK | POST | `/repos/{user}/{repo}/contents/apks/{filename}` |
-| 更新 APK | PUT | `/repos/{user}/{repo}/contents/apks/{filename}` |
-
-所有请求需 header：`Authorization: token {GITEE_TOKEN}`
-
-**请求体**：
-```json
-{
-  "content": "<base64 编码的文件内容>",
-  "message": "release: v1.26.6.7.0944"
-}
-```
-
-更新已有文件时需要额外带 `"sha": "<现有文件的 sha>"`（先 GET 拿）。
 
 ## manifest.json 格式
+
+在 `hub_apk` 仓库根目录：
 
 ```json
 {
   "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cgw0822.gitee.io/apk_api/apks",
+  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@main/apks",
   "minAndroid": "7.0",
   "versions": [
     {
@@ -105,11 +98,17 @@ bash api/upload.sh 1.26.6.7.0944 /workspace/dist/NexusHub-1.26.6.7.0944-debug.ap
 
 ## 常见问题
 
-**Q: 上传后网页没更新？**
-A: Gitee Pages 重新部署需要 1-3 分钟。等一下再刷新，**强制刷新**（Ctrl+Shift+R 或 Cmd+Shift+R）绕过浏览器缓存。
+**Q: 网页更新了但 APK 还没同步？**
+A: Vercel 30-60 秒自动重新部署。jsDelivr 5-15 分钟同步新 APK。强制刷新浏览器（Ctrl+Shift+R 或 Cmd+Shift+R）绕过缓存。
 
-**Q: Gitee 提示 401 错误？**
-A: GITEE_TOKEN 错了或过期了。重新去 https://gitee.com/profile/personal_access_tokens 生成新的。
+**Q: 401 Unauthorized？**
+A: GITHUB_PAT 错了或过期。重新去 https://github.com/settings/tokens 生成。
 
-**Q: 怎么删除某个旧版本？**
-A: 调用 `DELETE /repos/{user}/{repo}/contents/apks/{filename}`，需要 `sha` 参数。
+**Q: 怎么把旧版本删了？**
+A: 直接在 hub_apk 仓库里手动删除对应 APK 文件 + 编辑 manifest.json 移除该版本。
+
+## 仓库地址
+
+- 网页代码：https://github.com/cgw666666/apk_api
+- APK 存储：https://github.com/cgw666666/hub_apk
+- 在线网站：https://cgw-lime.vercel.app/

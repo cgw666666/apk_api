@@ -1,6 +1,6 @@
 {
   "latest": "1.26.6.7.0944",
-  "baseUrl": "https://cgw0822.gitee.io/apk_api/apks",
+  "baseUrl": "https://cdn.jsdelivr.net/gh/cgw666666/hub_apk@main/apks",
   "minAndroid": "7.0",
   "versions": [
     {
